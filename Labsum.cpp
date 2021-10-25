@@ -1,17 +1,19 @@
 #include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
+
 float EnergyCalc(int, float*);
 float MeritCalc(int, float);
+void printSequence(float*, int);
+void generateBinarySequences(int, float*, int);
 
 int main()
 {
-  int N = 13;
-  float S[] = {1,1,1,1,1,-1,-1,1,1,-1,1,-1,1};
-
-  float S_energy = EnergyCalc(N, S);
-  MeritCalc(N, S_energy);
+  int l = 26;  
+  float size[l]; 
+  generateBinarySequences(l, size, 0);
 
 	return 0;
 }
@@ -19,6 +21,7 @@ int main()
 
 float EnergyCalc(int length, float sequence[]) {
     float C[length-1], Y[length-1];
+    float energy = 0;
     for (int i=0; i<length-1; i++){
         C[i] = 0;
         Y[i] = 0;
@@ -34,12 +37,12 @@ float EnergyCalc(int length, float sequence[]) {
         Y[q] = C[q]*C[q];
 	}
 
-	float energy = 0;
-
 	for (int x = 0; x<length; x++){
         energy += Y[x];
 	}
+    
     cout<<" "<<energy;
+    
     return energy;
 
 }
@@ -50,4 +53,33 @@ float MeritCalc(int length, float energy){
     cout<<" \n"<<meritfactor;
     return meritfactor;
 
+}
+
+void printSequence(float sequence[], int length)
+{
+	for (int i = 0; i < length; i++) {
+		cout << sequence[i] << " ";
+	}
+	cout <<"\n";
+}
+
+void generateBinarySequences(int length, float sequence[], int z)
+{
+	 if (z == length) {
+		//printSequence(sequence, length);
+		return;
+	} 
+	sequence[z] = -1;
+	generateBinarySequences(length, sequence, z + 1);
+
+    float min_energy = EnergyCalc(length, sequence);
+
+
+    
+    cout<<" \n";
+
+	sequence[z] = 1;
+	generateBinarySequences(length, sequence, z + 1);
+
+    
 }
