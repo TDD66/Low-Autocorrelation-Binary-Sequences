@@ -11,9 +11,11 @@ void generateBinarySequences(int, float*, int);
 
 int main()
 {
-  int l = 26;  
+  int l = 3;  
   float size[l]; 
-  generateBinarySequences(l, size, 0);
+  generateBinarySequences(l, size, 0);  
+
+
 
 	return 0;
 }
@@ -60,26 +62,20 @@ void printSequence(float sequence[], int length)
 	for (int i = 0; i < length; i++) {
 		cout << sequence[i] << " ";
 	}
-	cout <<"\n";
+	cout << "\n";
 }
 
 void generateBinarySequences(int length, float sequence[], int z)
 {
 	 if (z == length) {
-		//printSequence(sequence, length);
+		printSequence(sequence, length);
 		return;
 	} 
 	sequence[z] = -1;
 	generateBinarySequences(length, sequence, z + 1);
 
-    float min_energy = EnergyCalc(length, sequence);
-
-
-    
-    cout<<" \n";
-
 	sequence[z] = 1;
 	generateBinarySequences(length, sequence, z + 1);
-
     
 }
+    
