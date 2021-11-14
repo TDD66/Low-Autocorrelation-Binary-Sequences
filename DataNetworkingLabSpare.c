@@ -73,7 +73,7 @@ char packet[50] = {0}; //50-byte array to contain copies of the tilt register va
 uint8_t dest[4] = {0xcc, 0xcc, 0xcc, 0xcc};
 uint8_t src[4] = {0xdd, 0xdd, 0xdd, 0xdd};
 uint8_t length[2] = {0x00, 0x32};
-int count = 2;
+int count = 3;
 
 while(1){
 if (joystick_centre() == 1){
@@ -111,7 +111,9 @@ else if(joystick_up() == 1){  //SCROLL UP
 	put_string(0,15,"             ");
 	LL_mDelay(500000);
 
-	count = count-1;
+if(count != 0){
+	count--;
+}
 	pckt_down( dest, src, length, count, sample);
 }
 
@@ -121,11 +123,14 @@ else if(joystick_down() == 1){  //SCROLL DOWN
 	put_string(0,15,"             ");
 	LL_mDelay(500000);
 	
-	count = count+1;
+	if(count != 3){
+	count++;
+}
 	pckt_down( dest, src, length, count, sample);
 }
 }
 }
+
 
 
 uint32_t joystick_left(void) {
@@ -376,13 +381,6 @@ void pckt_down(uint8_t* dest, uint8_t* src, uint8_t* length, int count, uint8_t 
 
 	char outputString[18]; //Buffer to store text in for LCD
 	
-				if(count != 3){
-					count = count + 1;
-				}
-			
-				if(count < 0){
-						count = 0;
-				}
 				
 				if(count==0){
 
@@ -407,12 +405,7 @@ void pckt_down(uint8_t* dest, uint8_t* src, uint8_t* length, int count, uint8_t 
 				
 				if(count==3){
 					LL_mDelay(500000);
-					display_tilt(sample);
-					
+					display_tilt(sample);	
 				}
 				
-				if(count > 3){
-					count = 3;
-				}
-
 }
