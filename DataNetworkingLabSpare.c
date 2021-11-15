@@ -39,7 +39,7 @@ char read_accelerometer(void);
 //Display functions
 void display_tilt(uint8_t sample); //convenience function to display tilt register
 void payload_display(char* array, char i); //display contents of packet after page-mode read
-void packet_display(uint8_t* dest, uint8_t* src, uint8_t* length, int page, uint8_t sample);
+void packet_display(uint8_t* dest, uint8_t* src, uint8_t* length, int page, uint8_t sample); // displays contents of the packet
 //EEPROM functions
 void eeprom_write(uint8_t data);
 void eeprom_write_page_mode(uint8_t data);
@@ -70,10 +70,10 @@ int main(void){
 	char packet[50] = {0}; //50-byte array to contain copies of the tilt register value
 
 	//other variables as necessary:
-	uint8_t dest[4] = {0xcc, 0xcc, 0xcc, 0xcc};
-	uint8_t src[4] = {0xdd, 0xdd, 0xdd, 0xdd};
-	uint8_t length[2] = {0x00, 0x32};
-	int page = 3;
+	uint8_t dest[4] = {0xcc, 0xcc, 0xcc, 0xcc}; // array to store dest address
+	uint8_t src[4] = {0xdd, 0xdd, 0xdd, 0xdd}; // array to store src address	
+	uint8_t length[2] = {0x00, 0x32}; // array to store length
+	int page = 3; // int variable to switch between each array (dest, src, length, payload)
 
 	//Main Loop
         while (1){
@@ -115,10 +115,10 @@ int main(void){
 			put_string(0,15,"             ");
 			LL_mDelay(500000);
 
-			if(page != 0){
+			if(page != 0){ // if page number is not equal to 0 joystick up will decrement page to go to next page, when page == 0, page can't decrement  
 				page--;
 				}
-			packet_display( dest, src, length, page, sample);
+			packet_display( dest, src, length, page, sample); // displays packet
 		
 
 		} else if(joystick_down()){  //SCROLL DOWN
@@ -128,10 +128,10 @@ int main(void){
 			put_string(0,15,"             ");
 			LL_mDelay(500000);
 
-			if(page != 3){
+			if(page != 3){ // as above but vice versa
 				page++;
 				}
-			packet_display( dest, src, length, page, sample);
+			packet_display( dest, src, length, page, sample); // display packet
 		}
 		}
   }
@@ -367,13 +367,13 @@ void eeprom_write_page_mode(uint8_t data){
 		LL_I2C_TransmitData8(I2C1, 0x00); //Transmit low byte
 		while(!LL_I2C_IsActiveFlag_TXE(I2C1));
 	
-		for (int i = 0; i < 31; i++){
+		for (int i = 0; i < 32; i++){ // write data to eeprom 32 times, length of page is 32 bytes
 			LL_I2C_TransmitData8(I2C1, data); //Data
 			while(!LL_I2C_IsActiveFlag_TXE(I2C1));
 	}
 		
 		LL_I2C_GenerateStopCondition(I2C1);    //STOP
-		LL_mDelay(5000); //Delay
+		LL_mDelay(5000); //Delay to let the eeprom switch pages
 	//Page 2
 		LL_I2C_GenerateStartCondition(I2C1); //START
 		while(!LL_I2C_IsActiveFlag_SB(I2C1));
@@ -388,7 +388,7 @@ void eeprom_write_page_mode(uint8_t data){
 		LL_I2C_TransmitData8(I2C1, 0x20); //Transmit low byte
 		while(!LL_I2C_IsActiveFlag_TXE(I2C1));
 	
-		for (int i = 0; i < 18; i++){
+		for (int i = 0; i < 18; i++){ // write data to eeprom 18 times, 32 + 18 = 50
 			LL_I2C_TransmitData8(I2C1, data); //Data
 			while(!LL_I2C_IsActiveFlag_TXE(I2C1));
 	}
@@ -422,11 +422,11 @@ void eeprom_read_page_mode(char* array) {
 		
 		LL_I2C_AcknowledgeNextData(I2C1, LL_I2C_ACK); //ACK INCOMING DATA
 		while(!LL_I2C_IsActiveFlag_RXNE(I2C1));
-		array[0]= LL_I2C_ReceiveData8(I2C1);
+		array[0]= LL_I2C_ReceiveData8(I2C1); // write first value of eeprom to first element of array
 		
 		LL_I2C_AcknowledgeNextData(I2C1, LL_I2C_NACK); //ACK INCOMING DATA
 		while(!LL_I2C_IsActiveFlag_RXNE(I2C1));
-		array[1] = LL_I2C_ReceiveData8(I2C1);
+		array[1] = LL_I2C_ReceiveData8(I2C1); // write second value of eeprom to second value of array
 
 		LL_I2C_GenerateStopCondition(I2C1);    //STOP
 }
@@ -435,27 +435,26 @@ void packet_display(uint8_t* dest, uint8_t* src, uint8_t* length, int page, uint
 	char outputString[18]; //Buffer to store text in for LCD
 	
 				
-				if(page==0){
+				if(page==0){ // when page is 0, dest will be displayed, count cannot go below 0
 				put_string(0,0,"dest");
 				sprintf(outputString, "%x%x%x%x", dest[0], dest[1], dest[2], dest[3]);
 				put_string(0,15, outputString);
 				}
 				
-				if(page==1){
+				if(page==1){ // when page is 1, src will be displayed
 				put_string(0,0,"src");
 				sprintf(outputString, "%x%x%x%x", src[0], src[1], src[2], src[3]);
 				put_string(0,15, outputString);
 				}
 				
-				if(page==2){	
+				if(page==2){	// when page is 2, length will be displayed
 				put_string(0,0,"length");
 				sprintf(outputString, "%x%x", length[0], length[1]);
 				put_string(0,15, outputString);
 				}
 				
-				if(page==3){
+				if(page==3){ // when page is 3, the tilt reg will be displayed
 					display_tilt(sample);	
 				}
 				
 }
-
