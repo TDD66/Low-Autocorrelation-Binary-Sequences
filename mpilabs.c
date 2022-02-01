@@ -12,7 +12,7 @@ int turnOffK(int, int);
 int main(int argc, char *argv[])
 {
 
-    int length = 5;
+    int length = 20;
     int N = length - 1; // only half the search space must be searched
 
     int rank, k;
@@ -81,7 +81,6 @@ int main(int argc, char *argv[])
         }
 	} 
 
-    num_of_optimal = num_of_optimal*2; // to account for the other half of the search space
     if(rank<k){
         printf("I am rank %d, my minimum is %d at %d\n", rank, minenergy, optimal);
     }
@@ -112,4 +111,5 @@ int turnOffK(int n, int k)
 }
 
 
+ 
  
