@@ -1,3 +1,5 @@
+// $HOME/opt/usr/local/bin/mpicc mpilabs.c -o mpilabs
+// $HOME/opt/usr/local/bin/mpirun -n 8 mpilabs
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -12,7 +14,7 @@ int turnOffK(int, int);
 int main(int argc, char *argv[])
 {
 
-    int length = 30;
+    int length = 3;
     int N = length - 1; // only half the search space must be searched
 
     int rank, k;
@@ -26,7 +28,7 @@ int main(int argc, char *argv[])
     uint64_t search_space_per_node = search_space/k; // 2^(N-k) search space per node
     int energy;
     int c; // autocorrelation
-    int minenergy = 100000;
+    int minenergy = floor((pow(length,2)*pow(8*M_PI*length, 3/(2*(double)length)))/14.6496);
     //int minenergy_global;
     int optimal; 
     /*int optimal_numbers[12];
@@ -85,7 +87,7 @@ int main(int argc, char *argv[])
         num_of_optimal++; // increment the number of optimal sequences
         }
 
-        if(count == (my_first + (search_space_per_node/2))){
+        if(count == (my_first + (search_space_per_node/32))){
 
             MPI_Allreduce(&minenergy, &minenergy, 1, MPI_INT, MPI_MIN, MPI_COMM_WORLD);// Communicate minimum number found....
 
