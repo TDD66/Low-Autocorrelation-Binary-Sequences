@@ -7,6 +7,7 @@
 #include <time.h>
 #include <stdint.h>
 #include <mpi.h>
+#define pi 3.14159265359
 
 unsigned int countSetBits(int);
 int turnOffK(int, int);
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
     uint64_t search_space_per_node = search_space/k; // 2^(N-k) search space per node
     int energy;
     int c; // autocorrelation
-    int minenergy = floor((pow(length,2)*pow(8*M_PI*length, 3/(2*(double)length)))/14.6496);
+    int minenergy = floor((pow(length,2)*pow(8*pi*length, 3/(2*(double)length)))/14.6496);
     int minenergy_global;
     int optimal;
     int comms_rate = 4; // frequency of communication in one search ie. if comms_rate = 4, I want comms every quarter way through
