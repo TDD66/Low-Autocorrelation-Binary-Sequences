@@ -1,3 +1,5 @@
+%% Code that uses low autocorrelation binary sequences to modulate a signal using binary phase shift keying (BPSK)
+
 clc, clear all, close all;
 
 data = [0 1 0 0 1 1 1];
