@@ -1,25 +1,30 @@
-# Low Autocorrelation Binary Sequence Search using MPI
+# Autocorrelation Binary Sequence Search using MPI
+
+## Overview
+The Autocorrelation Binary Sequence (LABS) problem poses the challenge of finding binary sequences with minimal autocorrelation, a critical pursuit in various fields like communications engineering, radar technology, statistical physics, and digital signature generation. These sequences play a pivotal role in reducing noise and enhancing the ability to detect desired targets in radar, sonar, and communication systems.
+
+The search for Low Autocorrelation Binary Sequences (LABS) is computationally demanding and falls within the realm of NP-complete problems. The search space grows exponentially with the sequence length, making it an arduous task even for moderately sized sequences. For instance, a sequence length of 𝐿 = 50 results in a search space of approximately 2^50 sequences, illustrating the complexity and magnitude of the search problem.
+
+## Objective
+This project aims to employ parallel processing through MPI to tackle the LABS problem efficiently. By leveraging multiple virtual machines to distribute the search space, the objective is to expedite the exhaustive search process, especially for longer sequence lengths. 
 
 ## Purpose
-This project aims to efficiently search for low autocorrelation binary sequences using parallel computing techniques implemented with MPI (Message Passing Interface). Autocorrelation sequences find extensive application in various fields like communication systems, radar, cryptography, and signal processing. This program focuses on finding sequences with minimal autocorrelation energy, a crucial factor in optimizing these systems' performance.
+- **Applications**: LABS finds applications in enhancing radar and communication systems by minimizing autocorrelation side lobe energies, contributing to noise reduction and improved target detection.
+- **Challenges**: The vast search space for binary sequences presents computational challenges, necessitating optimized algorithms and parallel computing techniques for efficient exploration.
 
 ## Features
-- **Parallel Search**: Utilizes MPI to distribute the search space among multiple processes for parallel computation, reducing search time significantly.
-- **Bitwise Operations**: Efficiently manipulates binary sequences using bitwise operations and bit counting techniques for autocorrelation calculation.
-- **Energy Optimization**: Calculates autocorrelation energy for each sequence and identifies the sequence with the lowest energy, optimizing for minimal autocorrelation.
+- **MPI Utilization**: Utilizes MPI for parallel processing, enabling the distribution of the search space across multiple computing nodes.
+- **Energy Optimization**: Calculates autocorrelation energy to identify sequences with the lowest energy, optimizing for minimal autocorrelation.
+- **Exhaustive Search**: Due to the complexity of the problem, an exhaustive search approach is employed to find optimal solutions.
 
 ## Getting Started
-1. **Prerequisites**: Ensure you have MPI installed on your system. You can use OpenMPI or MPICH.
-2. **Compile**: Compile the program using an MPI compiler (`mpicc` or similar) using the provided compilation command.
-3. **Run**: Execute the compiled program using an MPI runtime (`mpirun` or similar) and specify the number of processes.
+1. **Prerequisites**: Ensure MPI is installed on your system (e.g., OpenMPI or MPICH).
+2. **Compilation**: Compile the program using an MPI compiler (`mpicc` or similar) with the provided command.
+3. **Execution**: Run the compiled program using an MPI runtime (`mpirun` or similar), specifying the number of processes.
 
 ## Usage
-- Modify the `length` variable in the code to change the length of the binary sequences to be searched.
-- Adjust parameters like `comms_rate` to control the frequency of communication among processes during the search.
-- Experiment with different search space divisions (`N`) and parallel processes to optimize performance.
-
-## Contributors
-- [TDD66]
+- Modify the `length` variable in the code to adjust the length of binary sequences to be searched.
+- Experiment with different search space divisions and parallel processes to optimize performance.
 
 ## License
 This project is licensed under [License Name] - (Include the license file or link to the license).
