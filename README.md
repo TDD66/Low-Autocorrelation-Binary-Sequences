@@ -27,4 +27,4 @@ This project aims to employ parallel processing through MPI to tackle the LABS p
 - Experiment with different search space divisions and parallel processes to optimize performance.
 
 ## License
-This project is licensed under [License Name] - (Include the license file or link to the license).
+This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
