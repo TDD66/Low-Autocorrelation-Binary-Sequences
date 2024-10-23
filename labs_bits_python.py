@@ -12,7 +12,7 @@ def turnOffK(n, k):
 
 def autocorrelation(length):
     search_space = 1 << (length - 1)
-    c, optimal, num_of_optimal = 0, 0, 0
+    c, optimal = 0, 0
     minenergy = float('inf')
 
     for count in range(0, search_space):
@@ -40,12 +40,8 @@ def autocorrelation(length):
         if minenergy > energy:
             minenergy = energy
             optimal = count
-            num_of_optimal = 1
-        elif energy == minenergy:
-            num_of_optimal += 1
     
-    num_of_optimal *= 2
-    print(f"Min E = {minenergy}\nFirst Opt = {optimal}\nOptimal sequences = {num_of_optimal}")
+    print(f"Min E = {minenergy}\nFirst Opt = {optimal}")
 
 if __name__ =='__main__':
     autocorrelation(int(sys.argv[1]))
