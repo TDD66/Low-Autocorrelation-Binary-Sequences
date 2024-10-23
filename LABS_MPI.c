@@ -2,9 +2,8 @@
 // $HOME/opt/usr/local/bin/mpirun -n 8 mpilabs
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <string.h>
 #include <time.h>
+#include <math.h>
 #include <stdint.h>
 #include <mpi.h>
 #define pi 3.14159265359
@@ -16,7 +15,7 @@ int energycalc(int, int);
 int main(int argc, char *argv[])
 {
 
-    int length = 23;
+    int length = 11;
     int N = length - 1; // only half the search space must be searched
 
     int rank, k;
@@ -26,7 +25,7 @@ int main(int argc, char *argv[])
     MPI_Comm_size(MPI_COMM_WORLD, &k); //get number of processes
     MPI_Comm_rank(MPI_COMM_WORLD, &rank); //get my process id
 
-    uint64_t search_space = pow(2, N); // only half of the search space needs to be searched
+    uint64_t search_space = 1 << N; // only half of the search space needs to be searched
     uint64_t search_space_per_node = search_space/k; // 2^(N-k) search space per node
     int energy;
     int c; // autocorrelation
@@ -77,7 +76,7 @@ int main(int argc, char *argv[])
             int o = countSetBits(x); // number of 1s
             int z = r - o; // number of 0s
             c = z - o;
-            energy += pow(c, 2);
+            energy += c * c;
             if(energy >= minenergy){ // if the partial energy is greater than the minimum energy already found, stop the calculation for this sequence and go to the next sequence
                 i = length - 1;
             }
@@ -135,7 +134,7 @@ int energycalc(int length, int count){
         for(int i = 1; i < length; i++){
 
             int r = length - i;
-            uint64_t p = pow(2, r);
+            uint64_t p = 1 << r;
             int d = count >> i;
             int x = count^d;
 
@@ -151,11 +150,9 @@ int energycalc(int length, int count){
             int o = countSetBits(x); // number of 1s
             int z = r - o; // number of 0s
             c = z - o;
-            energy += pow(c, 2);
+            energy += c * c;
 
         }
         return energy;
-
-    
 }
  
